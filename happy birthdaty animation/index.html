@@ -1,14 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Animation</title>
     <link rel="stylesheet" href="style.css">
-    
+
 </head>
+
 <body>
-    <canvas id=c></canvas>
+    <canvas id="c"></canvas>
+
+    <!-- Interactive Birthday Cake Container -->
+    <div id="cake-container" class="hidden">
+        <div class="cake-wrapper">
+            <svg class="cake-svg" width="280" height="240" viewBox="0 -25 280 245" xmlns="http://www.w3.org/2000/svg">
+                <!-- Plate -->
+                <ellipse cx="140" cy="190" rx="120" ry="15" fill="#f0f0f0" stroke="#dcdcdc" stroke-width="1.5" />
+
+                <!-- Bottom Layer (Chocolate) -->
+                <path d="M 40 140 Q 140 150 240 140 L 240 185 Q 140 195 40 185 Z" fill="url(#chocolate-grad)" />
+                <!-- Bottom Frosting -->
+                <path
+                    d="M 40 140 Q 140 150 240 140 Q 235 147 225 145 Q 215 142 205 149 Q 195 155 185 147 Q 175 142 165 145 Q 155 149 145 147 Q 135 143 125 149 Q 115 155 105 147 Q 95 142 85 145 Q 75 149 65 147 Q 55 143 40 140 Z"
+                    fill="#ffffff" />
+
+                <!-- Middle Layer (Strawberry) -->
+                <path d="M 60 95 Q 140 105 220 95 L 220 140 Q 140 150 60 140 Z" fill="url(#strawberry-grad)" />
+                <!-- Middle Frosting -->
+                <path
+                    d="M 60 95 Q 140 105 220 95 Q 215 102 205 100 Q 195 97 185 104 Q 175 109 165 102 Q 155 97 145 100 Q 135 104 125 102 Q 115 97 105 104 Q 95 109 85 102 Q 75 97 60 95 Z"
+                    fill="#ffb6c1" />
+
+                <!-- Top Layer (Vanilla) -->
+                <path d="M 80 50 Q 140 60 200 50 L 200 95 Q 140 105 80 95 Z" fill="url(#vanilla-grad)" />
+                <!-- Top Frosting/Drip -->
+                <path
+                    d="M 80 50 Q 140 60 200 50 Q 195 57 185 55 Q 175 52 165 59 Q 155 64 145 57 Q 135 52 125 55 Q 115 59 105 57 Q 95 52 80 50 Z"
+                    fill="#ffffff" />
+
+                <!-- Cherry on top -->
+                <circle cx="140" cy="42" r="9" fill="url(#cherry-grad)" />
+                <path d="M 140 33 Q 148 18 156 22" stroke="#4a2306" stroke-width="1.5" fill="none" />
+
+                <!-- Candles -->
+                <!-- Left Candle -->
+                <rect x="105" y="15" width="8" height="35" rx="2" fill="url(#candle-grad-1)" />
+                <line x1="109" y1="15" x2="109" y2="10" stroke="#333" stroke-width="1.5" />
+                <path class="flame-svg" d="M 109 10 Q 114 0 109 -5 Q 104 0 109 10 Z" fill="url(#flame-grad)" />
+
+                <!-- Center Candle -->
+                <rect x="136" y="10" width="8" height="35" rx="2" fill="url(#candle-grad-2)" />
+                <line x1="140" y1="10" x2="140" y2="5" stroke="#333" stroke-width="1.5" />
+                <path class="flame-svg" d="M 140 5 Q 145 -5 140 -10 Q 135 -5 140 5 Z" fill="url(#flame-grad)" />
+
+                <!-- Right Candle -->
+                <rect x="167" y="15" width="8" height="35" rx="2" fill="url(#candle-grad-3)" />
+                <line x1="171" y1="15" x2="171" y2="10" stroke="#333" stroke-width="1.5" />
+                <path class="flame-svg" d="M 171 10 Q 176 0 171 -5 Q 166 0 171 10 Z" fill="url(#flame-grad)" />
+
+                <!-- Gradients definitions -->
+                <defs>
+                    <linearGradient id="chocolate-grad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#4a2211" />
+                        <stop offset="50%" stop-color="#69331a" />
+                        <stop offset="100%" stop-color="#4a2211" />
+                    </linearGradient>
+                    <linearGradient id="strawberry-grad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#d83a6c" />
+                        <stop offset="50%" stop-color="#ff6692" />
+                        <stop offset="100%" stop-color="#d83a6c" />
+                    </linearGradient>
+                    <linearGradient id="vanilla-grad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#d8b255" />
+                        <stop offset="50%" stop-color="#f7dc8d" />
+                        <stop offset="100%" stop-color="#d8b255" />
+                    </linearGradient>
+                    <radialGradient id="cherry-grad" cx="40%" cy="30%" r="50%">
+                        <stop offset="0%" stop-color="#ff4d4d" />
+                        <stop offset="70%" stop-color="#b30000" />
+                        <stop offset="100%" stop-color="#660000" />
+                    </radialGradient>
+                    <linearGradient id="candle-grad-1" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#ff6b8b" />
+                        <stop offset="50%" stop-color="#ffa8bc" />
+                        <stop offset="100%" stop-color="#ff6b8b" />
+                    </linearGradient>
+                    <linearGradient id="candle-grad-2" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#339af0" />
+                        <stop offset="50%" stop-color="#74c0fc" />
+                        <stop offset="100%" stop-color="#339af0" />
+                    </linearGradient>
+                    <linearGradient id="candle-grad-3" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#2f9e44" />
+                        <stop offset="50%" stop-color="#69db7c" />
+                        <stop offset="100%" stop-color="#2f9e44" />
+                    </linearGradient>
+                    <linearGradient id="flame-grad" x1="0" y1="1" x2="0" y2="0">
+                        <stop offset="0%" stop-color="#ff4500" stop-opacity="0.9" />
+                        <stop offset="40%" stop-color="#ff8c00" />
+                        <stop offset="80%" stop-color="#ffd700" />
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <div class="cake-instruction">Tap here for your birthday wishes</div>
+    </div>
+
+    <!-- Birthday Wishes glassmorphic modal overlay -->
+    <div id="wishes-modal" class="hidden">
+        <div class="wishes-card">
+            <button class="close-btn" id="close-modal" aria-label="Close message">&times;</button>
+            <div class="card-glow"></div>
+            <h2>Happy 18th Birthday, Ma Cheri! 💖</h2>
+            <div class="message-content">
+                <p>Happy 18th birthday to my absolute favorite person in the world! I really want you to know how much
+                    you mean to me. Before you came along, I never knew it was possible to feel this safe and happy with
+                    someone. Every time I see your face, all of my stress and worries just completely disappear. You
+                    have this amazing way of making me feel like I can conquer absolutely anything just by being in my
+                    corner. When we are together, the whole world fades into the background, and I just feel completely
+                    at peace. You are my home, my safe haven, and my biggest source of joy.</p>
+                <p>I truly do not know what I did to deserve a girlfriend as kind, beautiful, and completely stubborn as
+                    you. Thank you for always being my partner-in-crime, and for loving me even when I am annoying.</p>
+                <p>The world better get ready for you now that you are 18! I cannot wait to be right by your side for
+                    every single laugh, and cry in this next chapter. Happy birthday, my love!</p>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
+
 </html>

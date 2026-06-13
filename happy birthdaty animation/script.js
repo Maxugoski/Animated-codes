@@ -61,7 +61,9 @@ var w = c.width = window.innerWidth,
     sparkles = [],
     hearts = [],
     stars = [],
-    ribbons = [];
+    ribbons = [],
+    cakeShown = false,
+    candlesBlown = false;
 
 ctx.font = opts.charSize + 'px Verdana';
 
@@ -665,9 +667,14 @@ function anim(){
   
   ctx.translate( -hw, -hh );
   
-  if( done ) {
-    for( var l = 0; l < letters.length; ++l )
-      letters[ l ].reset();
+  if( done && !cakeShown ) {
+    cakeShown = true;
+    
+    // Show cake container
+    var cakeContainer = document.getElementById('cake-container');
+    if (cakeContainer) {
+      cakeContainer.classList.remove('hidden');
+    }
     
     // Spawn celebration elements from all sides
     for (var i = 0; i < opts.confettiCount * 1.5; i++) {
@@ -737,4 +744,96 @@ window.addEventListener( 'resize', function(){
   hh = h / 2;
   
   ctx.font = opts.charSize + 'px Verdana';
-})
+});
+
+// Add event listeners for cake and modal interaction
+function initCakeInteraction() {
+  var cakeContainer = document.getElementById('cake-container');
+  var wishesModal = document.getElementById('wishes-modal');
+  var closeModal = document.getElementById('close-modal');
+  var flames = document.querySelectorAll('.flame-svg');
+
+  if (cakeContainer) {
+    cakeContainer.addEventListener('click', function() {
+      if (!candlesBlown) {
+        candlesBlown = true;
+        
+        // Blow out candles (fade out/scale out flames in SVG)
+        flames.forEach(function(flame) {
+          flame.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+          flame.style.opacity = '0';
+          flame.style.transform = 'scale(0)';
+        });
+        
+        // Spawn massive explosion of confetti & shapes on canvas!
+        for (var i = 0; i < 80; i++) {
+          var cObj = new Confetti(
+            hw + (Math.random() - 0.5) * 120,
+            hh + (Math.random() - 0.5) * 60
+          );
+          var angle = Math.random() * Math.PI * 2;
+          var speed = Math.random() * 8 + 4;
+          cObj.vx = Math.cos(angle) * speed;
+          cObj.vy = Math.sin(angle) * speed - 3; // burst upwards
+          confetti.push(cObj);
+        }
+        
+        for (var i = 0; i < 30; i++) {
+          var hObj = new Heart(
+            hw + (Math.random() - 0.5) * 120,
+            hh + (Math.random() - 0.5) * 60
+          );
+          var angle = Math.random() * Math.PI * 2;
+          var speed = Math.random() * 6 + 3;
+          hObj.vx = Math.cos(angle) * speed;
+          hObj.vy = Math.sin(angle) * speed - 3;
+          hearts.push(hObj);
+        }
+
+        for (var i = 0; i < 30; i++) {
+          var sObj = new Star(
+            hw + (Math.random() - 0.5) * 120,
+            hh + (Math.random() - 0.5) * 60
+          );
+          var angle = Math.random() * Math.PI * 2;
+          var speed = Math.random() * 6 + 3;
+          sObj.vx = Math.cos(angle) * speed;
+          sObj.vy = Math.sin(angle) * speed - 3;
+          stars.push(sObj);
+        }
+
+        // Show the wishes modal after a short delay for anticipation
+        setTimeout(function() {
+          if (wishesModal) {
+            wishesModal.classList.remove('hidden');
+          }
+        }, 800);
+      } else {
+        // If already blown, clicking again just opens the modal
+        if (wishesModal) {
+          wishesModal.classList.remove('hidden');
+        }
+      }
+    });
+  }
+
+  if (closeModal && wishesModal) {
+    closeModal.addEventListener('click', function(e) {
+      e.stopPropagation(); // prevent triggering cake container click
+      wishesModal.classList.add('hidden');
+      
+      // Relight the candles for endless fun!
+      candlesBlown = false;
+      flames.forEach(function(flame) {
+        flame.style.opacity = '1';
+        flame.style.transform = 'scale(1)';
+      });
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCakeInteraction);
+} else {
+  initCakeInteraction();
+}
